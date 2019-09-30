@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Syllabizer {
 
-    public static List<String> Syllabize (List<String> listOfWords) {
+    public static List<String> syllabize (List<String> listOfWords) {
 
         List<String> tempList = new LinkedList<>();
         List<String> sylabizedWords = new LinkedList<>();
@@ -68,7 +68,7 @@ public class Syllabizer {
                             } else {
                                 if (i + 2 < word.length() && !checkIfVowel(word.charAt(i + 1)) && !checkIfVowel(word.charAt(i + 2))) {
                                     if ((word.charAt(i + 2) == 'z' && (word.charAt(i + 1) == 'c' || word.charAt(i + 1) == 's' || word.charAt(i + 1) == 'r' || word.charAt(i+1) == 'd')) || word.charAt(i + 2) == 'h' && word.charAt(i + 1) == 'c' || word.charAt(i+2) == 'ł'
-                                    || word.charAt(i+1) == 'ś' || word.charAt(i+1) == 's' || ((word.charAt(i+2) == 'ż' || word.charAt(i+2) == 'ź') && word.charAt(i+1) == 'd')) {
+                                    || word.charAt(i+1) == 'ś' || word.charAt(i+1) == 's' || word.charAt(i+1) == 'b' || ((word.charAt(i+2) == 'ż' || word.charAt(i+2) == 'ź') && word.charAt(i+1) == 'd')) {
                                         sylabe.append('-');
                                         sylabizedWords.add(sylabe.toString());
                                         sylabe = new StringBuilder();

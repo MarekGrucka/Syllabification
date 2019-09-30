@@ -85,7 +85,7 @@ public class textFormater {
             }
     }
     private static void removeApostropheUnwantedSpace(int index, int numerOfApostrophes, List listOfWords){
-        if(numerOfApostrophes%2==0 && index>0){
+        if(numerOfApostrophes%2==0 && index>0 && index+1<listOfWords.size()){
             listOfWords.remove(index+1);
         }
         else if(index<listOfWords.size()) {
@@ -96,6 +96,9 @@ public class textFormater {
     private static void replaceHyphen (int index, List listOfWords){
         listOfWords.remove(index);
         listOfWords.add(index, "–");
+        if(index+1<listOfWords.size()){
+            listOfWords.remove(index+1);
+        }
 
     }
 
