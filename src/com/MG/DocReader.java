@@ -1,17 +1,24 @@
+package com.MG;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import java.nio.file.Path;
 
 public class DocReader {
 
-	public static void readDocFile(String fileName) {
+	public static List<String> readDocFile(Path path) {
+
+        List<String> readFile = new ArrayList<>();
+        String fileName = path.toString();
 
 		try {
+
 			File file = new File(fileName);
 			FileInputStream fis = new FileInputStream(file.getAbsolutePath());
 
@@ -21,18 +28,22 @@ public class DocReader {
 
 			String[] paragraphs = we.getParagraphText();
 			
-			System.out.println("Total no of paragraph "+paragraphs.length);
+
 			for (String para : paragraphs) {
-				System.out.println(para.toString());
-			}
+			    readFile.add(para);
+				}
 			fis.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return readFile;
 
 	}
 
-	public static void readDocxFile(String fileName) {
+	public static List<String> readDocxFile(Path path) {
+
+		List<String> readFile = new ArrayList<>();
+		String fileName = path.toString();
 
 		try {
 			File file = new File(fileName);
@@ -42,21 +53,16 @@ public class DocReader {
 
 			List<XWPFParagraph> paragraphs = document.getParagraphs();
 			
-			System.out.println("Total no of paragraph "+paragraphs.size());
+
 			for (XWPFParagraph para : paragraphs) {
-				System.out.println(para.getText());
-			}
+				readFile.add(para.getText());
+				}
 			fis.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return readFile;
 	}
 
-	public static void main(String[] args) {
 
-		readDocxFile("C:\\Test.docx");
-
-		readDocFile("C:\\Test.doc");
-
-	}
 }

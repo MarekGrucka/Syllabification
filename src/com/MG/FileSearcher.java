@@ -35,7 +35,7 @@ public final class FileSearcher {
             final String regex = String.format(containsRegex, fileName, fileExt);
             final Pattern pattern = Pattern.compile(regex);
             try (Stream<Path> walk = Files.walk(initialPath.toRealPath())) {
-                return walk.filter(path -> Files.isRegularFile(path) &&
+                return walk.filter(path -> Files.isRegularFile(path) && !path.toString().contains("Syllabized") &&
                         pattern.matcher(path.toString()).find())
                         .collect(Collectors.toList());
             }

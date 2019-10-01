@@ -5,51 +5,44 @@ import java.util.List;
 
 public class Syllabizer {
 
-    public static List<String> syllabize (List<String> listOfWords) {
+    public static List<String> syllabize (final List<String> listOfWords) {
+
 
         List<String> tempList = new LinkedList<>();
         List<String> sylabizedWords = new LinkedList<>();
 
-        for (String word : listOfWords) {
-            tempList.add(word);
-        }
+        for (String word : listOfWords) {tempList.add(word);}
+
 
         for (String word : tempList) {
 
             StringBuilder sylabe = new StringBuilder();
 
-            int numberOfSylabes = 0;
-            int vowel = 0;
+            int numberOfSylablesInWord = countNumberOfSylabes(word);
+            int actualSylableIndex = 0;
 
-            for (int i = 0; i < word.length(); i++) {
-                if (checkIfVowel(word.charAt(i))) {
-                    if ((word.charAt(i) == 'i' || word.charAt(i) == 'I') && i + 1 < word.length() && checkIfVowel(word.charAt(i+1))){
-
-                    }
-                    else {
-                        numberOfSylabes++;
-                    }
-                }
-            }
-                //System.out.println(numberOfSylabes);
-
-                if (numberOfSylabes < 2) {
-                    sylabizedWords.add(word);
-
-                } else {
+            if (numberOfSylablesInWord <= 1) { sylabizedWords.add(word);}
+            else {
 
                     for (int i = 0; i < word.length(); i++) {
 
                         if (checkIfVowel(word.charAt(i))) {
-                            vowel++;
+                            actualSylableIndex++;
                             sylabe.append(word.charAt(i));
 
-                            if ((word.charAt(i) == 'i' || word.charAt(i) == 'I') && i + 1 < word.length() && checkIfVowel(word.charAt(i+1))) {
+                            if (i + 1 < word.length() && (word.charAt(i) == 'i' || word.charAt(i) == 'I') && checkIfVowel(word.charAt(i+1))) {
                                 i++;
                                 sylabe.append(word.charAt(i));
                             }
 
-                            if (vowel == numberOfSylabes) {
+                            if (i + 1 < word.length() && (word.charAt(i+1) == 'u' || word.charAt(i+1) == 'U') && checkIfVowel(word.charAt(i))) {
+                                i++;
+                                sylabe.append(word.charAt(i));
+                            }
+
+
+
+                            if (actualSylableIndex == numberOfSylablesInWord) {
                                     if (i == word.length() - 1) {
                                     sylabizedWords.add(sylabe.toString());
                                     sylabe = new StringBuilder();
@@ -110,12 +103,32 @@ public class Syllabizer {
             return sylabizedWords;
     }
 
+
+
+
+
+
     private static boolean checkIfVowel(char letter){
         return letter == 'a' || letter == 'A' || letter == 'e' || letter == 'E' || letter == 'i' || letter == 'I' || letter == 'o' || letter == 'O' || letter == 'u' || letter == 'U' || letter == 'ó' || letter == 'Ó' || letter == 'y' || letter == 'Y' || letter == 'ą' || letter == 'Ą' || letter == 'ę' || letter == 'Ę';
 
     }
 
+    private static int countNumberOfSylabes(String word){
+        int numberOfSylabes = 0;
+        for (int i = 0; i < word.length(); i++) {
+            if (checkIfVowel(word.charAt(i))) {
+                if (!(i + 1 < word.length() && (word.charAt(i) == 'i' || word.charAt(i) == 'I') && checkIfVowel(word.charAt(i+1)))){
+                    if (!(i + 1 < word.length() && (word.charAt(i+1) == 'u' || word.charAt(i+1) == 'U') && checkIfVowel(word.charAt(i)))){
+                        numberOfSylabes++;
+                    }
+
+                }
+
+            }
+        }
+        return  numberOfSylabes;
+    }
+
+
+
 }
-
-
-/// WIELKIE LITERY DODAC
