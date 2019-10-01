@@ -9,63 +9,32 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
+
 import org.apache.poi.extractor.POITextExtractor;
 import static com.MG.Syllabizer.*;
-
-
 
 public class Main {
 
     public static void main(String[] args) {
 
-        List<Path> filePaths = new ArrayList<>();
-
-
-
-
-
+        List<Path> txtFilePaths = new ArrayList<>();
+        List<Path> docFilePaths = new ArrayList<>();
+        List<Path> docxFilePaths = new ArrayList<>();
 
         try {
             Path initialPath = Paths.get(".");
-            List<Path>txtFilePaths =
-                        FileSearcher.searchRegularFilesStartsWith(initialPath, "", ".txt");
-                        //txtFilePaths.stream().forEach(System.out::println);
-            List<Path>docFilePaths =
-                    FileSearcher.searchRegularFilesStartsWith(initialPath, "", ".doc");
-            List<Path>docxFilePaths =
-                    FileSearcher.searchRegularFilesStartsWith(initialPath, "", ".docx");
-            filePaths.addAll(txtFilePaths);
-            filePaths.addAll(docFilePaths);
-            filePaths.addAll(docxFilePaths);
 
-            filePaths.stream().forEach(System.out::println);
+            txtFilePaths = FileSearcher.searchRegularFilesStartsWith(initialPath, "", ".txt");
+            docFilePaths = FileSearcher.searchRegularFilesStartsWith(initialPath, "", ".doc");
+            docxFilePaths = FileSearcher.searchRegularFilesStartsWith(initialPath, "", ".docx");
+
         }
-        catch (java.io.IOException e){
-            System.out.println("No matching files found.");
-        }
+        catch (java.io.IOException e){System.out.println("No matching files found.");}
 
 
-        try {
-            List<String> txtFile = Files.readAllLines(filePaths.get(3), Charset.forName("Windows-1250"));
-
-            List<String> result = syllabize(textFormater.format(txtFile));
-
-            //for (String word : result){
-            //    System.out.print(word);
-           // }
-
-
-            writeSyllabizedFile(filePaths.get(3), result);
-
-            }
-            //textFormater.format(txtFile);
-
-
-
-        catch (java.io.IOException e){
-            System.out.println(e.getClass() + e.getMessage());
-        }
-
+        try {sylabizeAllTypeFiles(txtFilePaths,docFilePaths, docxFilePaths); }
+        catch (java.io.IOException e){System.out.println(e.getClass() + e.getMessage());}
 
     }
 
@@ -73,16 +42,33 @@ public class Main {
 
 
         String[] pathElements = path.toString().split("\\.");
-
-        Path outputPath = Paths.get(pathElements[0] + "Syllabized." + pathElements[1]);
-
+        Path outputPath = Paths.get(pathElements[0] + "Syllabized." + "txt");
         Files.write(outputPath, list, Charset.forName("Windows-1250"), StandardOpenOption.CREATE);
-
-    try (BufferedWriter  writer = Files.newBufferedWriter(outputPath)) {
+         try (BufferedWriter  writer = Files.newBufferedWriter(outputPath)) {
 
             for (String word : list) {
             writer.write(word);
-         }
+            }
          }
     }
+    private static void sylabizeAllTypeFiles(List<Path> txtFilePaths,   List<Path> docFilePaths,   List<Path> docxFilePaths) throws java.io.IOException {
+
+        for (Path txtfilepath : txtFilePaths) {
+            List<String> txtFile = Files.readAllLines(txtfilepath, Charset.forName("Windows-1250"));
+            List<String> result = syllabize(textFormater.format(txtFile));
+            writeSyllabizedFile(txtfilepath, result);
+        }
+
+        for (Path docfilepath : docFilePaths) {
+            List<String> docFile = DocReader.readDocFile(docfilepath);
+            List<String> result = syllabize(textFormater.format(docFile));
+            writeSyllabizedFile(docfilepath, result);
+        }
+        for (Path docxfilepath : docxFilePaths) {
+            List<String> docxFile = DocReader.readDocFile(docxfilepath);
+            List<String> result = syllabize(textFormater.format(docxFile));
+            writeSyllabizedFile(docxfilepath, result);
+        }
+    }
+
 }
