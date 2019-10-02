@@ -1,0 +1,15 @@
+Syllabification.iml
+
+*.iml
+*.log
+*.
+target
+out
+.idea
+.classpath
+.project
+.settings
+.checkstyle
+/bin/
+
+plugin
