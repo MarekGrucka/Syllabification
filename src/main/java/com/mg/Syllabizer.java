@@ -1,4 +1,4 @@
-package main.java.com.mg;
+package com.mg;
 
 import java.util.LinkedList;
 import java.util.List;

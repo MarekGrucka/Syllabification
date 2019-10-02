@@ -1,4 +1,4 @@
-package main.java.com.mg;
+package com.mg;
 
 import java.io.IOException;
 import java.nio.file.Files;

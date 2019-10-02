@@ -1,4 +1,4 @@
-package main.java.com.mg;
+package com.mg;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
