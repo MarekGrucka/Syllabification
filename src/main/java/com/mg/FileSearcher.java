@@ -8,28 +8,18 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public final class FileSearcher {
+final class FileSearcher {
 
 
         private static final String startsWithRegex = "(?<![_ \\-\\p{L}\\d\\[\\]\\(\\) ])";
-        private static final String endsWithRegex = "(?=[\\.\\n])";
-        private static final String containsRegex = "%s(?:[^\\/\\\\]*(?=((?i)%s(?!.))))";
+    private static final String containsRegex = "%s(?:[^\\/\\\\]*(?=((?i)%s(?!.))))";
 
-        public static List<Path> searchRegularFilesStartsWith(final Path initialPath,
+        static List<Path> searchRegularFilesStartsWith(final Path initialPath,
                                                               final String fileName, final String fileExt) throws IOException {
             return searchRegularFiles(initialPath, startsWithRegex + fileName, fileExt);
         }
 
-        public static List<Path> searchRegularFilesEndsWith(final Path initialPath,
-                                                            final String fileName, final String fileExt) throws IOException {
-            return searchRegularFiles(initialPath, fileName + endsWithRegex, fileExt);
-        }
-
-        public static List<Path> searchRegularFilesAll(final Path initialPath) throws IOException {
-            return searchRegularFiles(initialPath, "", "");
-        }
-
-        public static List<Path> searchRegularFiles(final Path initialPath,
+       private static List<Path> searchRegularFiles(final Path initialPath,
                                                     final String fileName, final String fileExt)
                 throws IOException {
             final String regex = String.format(containsRegex, fileName, fileExt);

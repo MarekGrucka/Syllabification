@@ -10,6 +10,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mg.DocReader.getDocPath;
 import static com.mg.Syllabizer.syllabize;
 
 public class Main {
@@ -46,6 +47,7 @@ public class Main {
         }
     }
 
+
     private static void sylabizeAndSaveFile(List<Path> paths) throws IOException {
         for (Path path : paths) {
             List<String> docPath = getDocPath(path);
@@ -54,18 +56,4 @@ public class Main {
         }
     }
 
-    private static List<String> getDocPath(Path path) throws IOException {
-        String fileName = path.getFileName().toString();
-        int length = fileName.length();
-        String fileType = fileName.substring(length - 3, length);
-        switch (fileType) {
-            case "txt":
-                return Files.readAllLines(path, Charset.forName("Windows-1250"));
-            case "doc":
-                return DocReader.readDocFile(path);
-            case "docx":
-                return DocReader.readDocxFile(path);
-        }
-        return new ArrayList<>();
-    }
 }
